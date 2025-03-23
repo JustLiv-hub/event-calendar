@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Calendar</title>
+  <style>
+    body {
+      background-color: #000000;
+      color: #FFFFFF;
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .event {
+      background-color: #1a1a1a;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+    .event-date {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #a66cff;
+    }
+    .event-title {
+      margin-top: 5px;
+      font-size: 1rem;
+    }
+    .event-time {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Upcoming Events</h1>
+  <div id="calendar"></div>
+
+  <script>
+    fetch('events.json')
+      .then(response => response.json())
+      .then(events => {
+        const calendar = document.getElementById('calendar');
+        events.forEach(event => {
+          const el = document.createElement('div');
+          el.className = 'event';
+          el.innerHTML = `
+            <div class="event-date">${event.date}</div>
+            <div class="event-title">${event.title}</div>
+            <div class="event-time">${event.time}</div>
+          `;
+          calendar.appendChild(el);
+        });
+      })
+      .catch(error => {
+        document.getElementById('calendar').innerText = 'Failed to load events.';
+        console.error('Error fetching events:', error);
+      });
+  </script>
+</body>
+</html>
